@@ -1,6 +1,6 @@
 name: keyword_extractor
-description: A starting point for Dart libraries or applications.
-version: 1.0.0
+description: A lightweight Dart package that extracts keywords from class instances via toMap/toJson. Ideal for building simple full-text search or tagging systems..
+version: 0.0.1
 # repository: https://github.com/my_org/my_repo
 
 environment:
