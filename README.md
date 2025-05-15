@@ -1,39 +1,147 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# keyword_extractor
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages). 
+**⚠️ Experimental Package — Not ready for production**
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages). 
--->
+`keyword_extractor` is a Dart package for extracting keywords from structured text data.
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+It supports:
+
+- ✅ Basic word-based tokenization
+- ✅ Word prefix and phrase n-gram generation
+- ✅ Field-specific keyword extraction
+
+---
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Extracts keywords from `Map<String, dynamic>` data
+- Works with any object that provides `.toMap()` or `.toJson()`
+- Swappable tokenizer strategies:
+  - `DefaultTokenizer`: simple word splitting
+  - `AdvancedTokenizer`: word prefixes + phrase n-grams
+- `SelectiveKeywordExtractor` for targeting specific fields
 
-## Getting started
+---
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+## Getting Started
 
 ```dart
-const like = 'sample';
+import 'package:keyword_extractor/keyword_extractor.dart';
+
+void main() {
+  final data = {
+    'title': 'Improving search accuracy with keyword extraction',
+    'summary': 'This article explores simple and advanced tokenization techniques.',
+  };
+
+  final extractor = DefaultKeywordExtractor(
+    tokenizer: const DefaultTokenizer(),
+  );
+
+  final keywords = extractor.extract(data);
+  print(keywords);
+}
 ```
 
-## Additional information
+---
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+## Selective Field Extraction
+
+```dart
+final extractor = SelectiveKeywordExtractor(
+  tokenizer: const AdvancedTokenizer(),
+  fields: ['title'], // extract only from the 'title' field
+);
+
+final keywords = extractor.extract(data);
+print(keywords);
+```
+
+---
+
+## Input & Output Example
+
+**Input Map:**
+
+```json
+{
+  "title": "Improving search accuracy with keyword extraction",
+  "summary": "This article explores simple and advanced tokenization techniques."
+}
+```
+
+**DefaultTokenizer Output:**
+
+```json
+[
+  "improving",
+  "search",
+  "accuracy",
+  "with",
+  "keyword",
+  "extraction",
+  "this",
+  "article",
+  "explores",
+  "simple",
+  "and",
+  "advanced",
+  "tokenization",
+  "techniques"
+]
+```
+
+**AdvancedTokenizer Output (partial):**
+
+```json
+[
+  "imp",
+  "impr",
+  "impro",
+  "improv",
+  "improvi",
+  "improvin",
+  "improving",
+  "sea",
+  "sear",
+  "searc",
+  "search",
+  "keyword extraction",
+  "extraction techniques",
+  "simple and advanced",
+  "improving search",
+  "search accuracy",
+  "accuracy with keyword"
+]
+```
+
+---
+
+## Tokenizers
+
+| Tokenizer           | Description                                 |
+| ------------------- | ------------------------------------------- |
+| `DefaultTokenizer`  | Splits text on spaces and punctuation       |
+| `AdvancedTokenizer` | Adds word prefixes and phrase n-gram tokens |
+
+---
+
+## Disclaimer
+
+This package is **experimental** and under active development.  
+Do **not** use it in production environments. APIs may change, and edge cases may not be fully covered yet.
+
+---
+
+## Roadmap
+
+- [ ] Stopword filtering
+- [ ] Fuzzy variant generation
+- [ ] Nested field/key support
+- [ ] Token ranking and weighting
+
+---
+
+## License
+
+MIT
