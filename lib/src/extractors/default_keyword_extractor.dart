@@ -1,4 +1,5 @@
 import 'package:keyword_extractor/keyword_extractor.dart';
+import 'package:keyword_extractor/src/tokenizers/tokenizer.dart';
 
 class DefaultKeywordExtractor implements KeywordExtractor {
   final Tokenizer tokenizer;
