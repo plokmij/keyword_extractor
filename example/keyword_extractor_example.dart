@@ -2,9 +2,9 @@ import 'package:keyword_extractor/keyword_extractor.dart';
 
 void main() {
   final sampleData = {
-    'title': 'Exploring advanced search techniques in Dart',
-    'description':
-        'This article introduces keyword extraction methods for text indexing and search optimization.',
+    "title": "Improving search accuracy with keyword extraction",
+    "summary":
+        "This article explores simple and advanced tokenization techniques.",
   };
 
   // Extract keywords using the default tokenizer
